@@ -106,6 +106,11 @@ func GetInterp(file string) (string, error) {
 	if err != nil {
 		return "", nil
 	}
+	_, err = f.DynamicSymbols()
+	if err != nil {
+		// Statically linked, don't look for dependencies.
+		return "", nil
+	}
 	s := f.Section(".interp")
 	var interp string
 	if s != nil {
